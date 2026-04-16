@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-cream text-sepia overflow-x-hidden;
+    background-image: 
+      radial-gradient(at 0% 0%, hsla(38, 56%, 95%, 1) 0, transparent 50%),
+      radial-gradient(at 50% 0%, hsla(11, 48%, 93%, 1) 0, transparent 50%),
+      url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+  }
+
+  h1, h2, h3 {
+    @apply font-handwriting;
+  }
+}
+
+@layer components {
+  .scrapbook-page {
+    @apply relative w-full min-h-screen p-8 md:p-16 flex flex-col items-center;
+    background: #FDF9F0;
+    box-shadow: inset 0 0 100px rgba(42, 33, 24, 0.05);
+  }
+
+  .her-perspective .scrapbook-page {
+    background: #FDE8F1;
+    box-shadow: inset 0 0 100px rgba(198, 90, 115, 0.07);
+  }
+
+  .torn-edge {
+    filter: drop-shadow(0 2px 2px rgba(42, 33, 24, 0.1));
+  }
+
+  .polaroid-frame {
+    @apply bg-white p-3 pb-12 shadow-md relative inline-block;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+  }
+
+  .polaroid-frame:hover {
+    @apply shadow-xl z-10;
+    transform: scale(1.05) rotate(0deg) !important;
+  }
+
+  .washi-tape {
+    @apply absolute w-16 h-6 opacity-60 pointer-events-none;
+    background-color: var(--tape-color, #8FA68A);
+    mix-blend-mode: multiply;
+  }
+
+  .handwritten {
+    @apply font-handwriting leading-tight;
+  }
+
+  .journal-text {
+    @apply font-journal leading-relaxed text-lg;
+  }
+
+  .lined-paper {
+    background-image: linear-gradient(#9ea0a5 1px, transparent 1px);
+    background-size: 100% 28px;
+    line-height: 28px;
+    padding-top: 4px;
+  }
+}
+
+/* Page Divider SVG Masks */
+.divider-bottom {
+  @apply absolute bottom-0 left-0 w-full h-12 z-20 pointer-events-none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,0 C150,30 350,0 500,40 C650,80 850,20 1000,50 C1150,80 1200,60 1200,60 V120 H0 Z' fill='%23F5EDD8'/%3E%3C/svg%3E");
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Custom Cursor */
+#custom-cursor {
+  @apply fixed pointer-events-none z-[9999] mix-blend-multiply transition-transform duration-100 ease-out opacity-0;
+  width: 24px;
+  height: 24px;
+  background: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 2C12 2 15 10 22 12C15 14 12 22 12 22C12 22 9 14 2 12C9 10 12 2 12 2Z' fill='%23D4917A'/%3E%3C/svg%3E") no-repeat center;
+}
+
+body:hover #custom-cursor {
+  @apply opacity-70;
+}
+
+/* His Perspective Theme */
+.his-perspective {
+  --accent: #C4974E;
+  --secondary: #2A2118;
+  --surface: #FCFAF2;
+  --card-bg: #FFFFFF;
+  --card-border: rgba(42, 33, 24, 0.15);
+  --ink: #2A2118;
+  --bg-texture: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+}
+
+/* Her Perspective Theme — Rose Quartz × Lavender Plum */
+.her-perspective {
+  --accent: #C65A73;
+  --secondary: #9B7BAE;
+  --surface: #FDF0F6;
+  --card-bg: #FDE8F1;
+  --card-border: rgba(198, 90, 115, 0.25);
+  --ink: #3B1F2B;
+  --bg-texture: url('https://www.transparenttextures.com/patterns/linen-design.png');
+}
+
+body.her-perspective {
+  background-color: var(--surface);
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(330, 70%, 93%, 1) 0, transparent 45%),
+    radial-gradient(at 100% 0%, hsla(280, 50%, 92%, 1) 0, transparent 45%),
+    radial-gradient(at 50% 100%, hsla(345, 55%, 92%, 1) 0, transparent 50%),
+    var(--bg-texture);
+}
+
+body.his-perspective {
+  background-color: var(--surface);
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(38, 56%, 95%, 1) 0, transparent 50%),
+    radial-gradient(at 50% 0%, hsla(11, 48%, 93%, 1) 0, transparent 50%),
+    var(--bg-texture);
+}
+
+/* Global overridable variables */
+:root {
+  --rose: #D4917A;
+  --gold: #C4974E;
+  --sepia: #2A2118;
+  --sage: #8FA68A;
+  --cream: #FCFAF2;
+}
+
+.star {
+  @apply absolute rounded-full bg-white opacity-0 animate-twinkle;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 0.8; transform: scale(1.2); }
+}
+
+.ink-smudge {
+  @apply absolute opacity-10 pointer-events-none;
+  filter: blur(8px);
+}
