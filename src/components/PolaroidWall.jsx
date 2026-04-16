@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Pin, Plus, Image as ImageIcon, X, Check, Loader2, Edit3 } from 'lucide-react'
-import { pb, db, collection, onSnapshot, query, orderBy, addDoc, updateDoc, deleteDoc } from '../lib/supabase'
+import { pb, db, collection, onSnapshot, query, orderBy, doc, addDoc, updateDoc, deleteDoc } from '../lib/supabase'
 import { uploadToCloudinary } from '../lib/cloudinary'
 
 export default function PolaroidWall({ perspective }) {

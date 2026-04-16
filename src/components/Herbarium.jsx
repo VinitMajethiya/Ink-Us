@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Leaf, Scissors, Microscope, PenTool, Plus, X, Image as ImageIcon, Check, Loader2, Edit2 } from 'lucide-react'
-import { pb, db, collection, query, onSnapshot, orderBy, addDoc, updateDoc, deleteDoc } from '../lib/supabase'
+import { pb, db, collection, query, onSnapshot, orderBy, doc, addDoc, updateDoc, deleteDoc } from '../lib/supabase'
 import { uploadToCloudinary } from '../lib/cloudinary'
 
 export default function Herbarium({ perspective }) {
