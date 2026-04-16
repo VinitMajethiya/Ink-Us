@@ -77,6 +77,19 @@ export default function PolaroidWall({ perspective }) {
     }
   }
 
+  const handleDelete = async () => {
+    const existing = memories.find(m => m.slotIndex === editingSlot)
+    if (!existing) return
+
+    try {
+      await deleteDoc(doc(db, 'wall_memories', existing.id))
+      setEditingSlot(null)
+    } catch (err) {
+      console.error("Delete Error:", err)
+      alert("Failed to unpin memory")
+    }
+  }
+
   return (
     <section className={`py-24 shadow-inner relative overflow-hidden transition-colors duration-1000 ${isHer ? 'bg-[#F2E4ED]' : 'bg-[#E0D5B7]'}`}>
       <div className="absolute inset-0 opacity-10 pointer-events-none" 
@@ -140,7 +153,7 @@ export default function PolaroidWall({ perspective }) {
             />
             <motion.div 
                 initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }}
-                className="bg-cream p-8 rounded-lg shadow-2xl relative z-10 w-full max-w-md border-8 border-white"
+                className="bg-cream p-8 rounded-lg shadow-2xl relative z-10 w-full max-w-md border-x-8 border-white"
             >
                 <div className="absolute inset-0 opacity-10 pointer-events-none bg-paper-texture" />
                 <div className="relative z-10">
@@ -180,20 +193,35 @@ export default function PolaroidWall({ perspective }) {
                             />
                         </div>
 
-                        <div className="flex gap-4 pt-4">
+                        <div className="flex flex-col gap-3 pt-4">
                             <button 
                                 onClick={handleSave}
                                 disabled={isUploading}
-                                className="flex-1 bg-sepia text-cream py-3 font-handwriting text-2xl hover:bg-sepia/90 transition-colors flex items-center justify-center gap-2"
+                                className="w-full bg-sepia text-cream py-3 font-handwriting text-2xl hover:bg-sepia/90 transition-colors flex items-center justify-center gap-2"
                             >
                                 <Check className="w-5 h-5" /> Save Pin
                             </button>
-                            <button 
-                                onClick={() => setEditingSlot(null)}
-                                className="px-6 py-3 bg-red-100 text-red-700 font-handwriting text-2xl hover:bg-red-200 transition-colors"
-                            >
-                                <X className="w-5 h-5" />
-                            </button>
+                            
+                            <div className="flex gap-3">
+                                {memories.find(m => m.slotIndex === editingSlot) && (
+                                    <button 
+                                        onClick={() => {
+                                            if (window.confirm("Are you sure you want to unpin this memory? It will be gone forever.")) {
+                                                handleDelete()
+                                            }
+                                        }}
+                                        className="flex-1 px-6 py-3 bg-red-50 text-red-700 font-handwriting text-xl hover:bg-red-100 transition-colors flex items-center justify-center gap-2 border border-red-200"
+                                    >
+                                        <X className="w-4 h-4" /> Unpin Memory
+                                    </button>
+                                )}
+                                <button 
+                                    onClick={() => setEditingSlot(null)}
+                                    className="px-6 py-3 bg-cream border border-sepia/10 text-sepia/40 font-handwriting text-xl hover:bg-sepia/5 transition-colors flex-1"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

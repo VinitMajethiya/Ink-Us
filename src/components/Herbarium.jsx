@@ -81,6 +81,18 @@ export default function Herbarium({ perspective }) {
     }
   }
 
+  const handleDelete = async () => {
+    if (!editingItem || editingItem === 'new') return
+    
+    try {
+      await deleteDoc(doc(db, 'herbarium_items', editingItem))
+      setEditingItem(null)
+    } catch (err) {
+      console.error("Delete Error:", err)
+      alert("Failed to discard specimen")
+    }
+  }
+
   return (
     <section className={`py-32 relative transition-colors duration-1000 ${isHer ? 'bg-[#F9F6F2]' : 'bg-[#F2EFE9]'}`}>
       <div className="absolute inset-0 opacity-10 pointer-events-none bg-paper-texture" />
@@ -245,13 +257,31 @@ export default function Herbarium({ perspective }) {
                             className="w-full bg-sepia/5 border-l-2 border-sepia/20 p-4 font-journal text-lg focus:outline-none focus:border-sepia/40 resize-none"
                         />
 
-                        <div className="flex gap-4 pt-6">
-                           <button onClick={handleSave} className="flex-1 bg-sepia text-cream py-4 font-handwriting text-3xl hover:bg-sepia/90 transition-all flex items-center justify-center gap-2">
+                        <div className="flex flex-col gap-4 pt-6">
+                           <button onClick={handleSave} className="w-full bg-sepia text-cream py-4 font-handwriting text-3xl hover:bg-sepia/90 transition-all flex items-center justify-center gap-2 shadow-lg">
                                <Check className="w-6 h-6" /> Save Entry
                            </button>
-                           <button onClick={() => setEditingItem(null)} className="p-4 text-sepia/40 hover:text-red-500 transition-colors">
-                               <X className="w-8 h-8" />
-                           </button>
+                           
+                           <div className="flex gap-4">
+                               {editingItem !== 'new' && (
+                                   <button 
+                                        onClick={() => {
+                                            if (window.confirm("Do you really want to discard this little treasure?")) {
+                                                handleDelete()
+                                            }
+                                        }}
+                                        className="flex-1 px-4 py-3 bg-red-50 text-red-700 font-handwriting text-2xl hover:bg-red-100 transition-colors border border-red-200"
+                                   >
+                                        Discard
+                                   </button>
+                               )}
+                               <button 
+                                    onClick={() => setEditingItem(null)} 
+                                    className="px-4 py-3 text-sepia/40 hover:text-sepia transition-colors font-handwriting text-2xl flex-1 border border-sepia/5"
+                               >
+                                    Cancel
+                                </button>
+                           </div>
                         </div>
                     </div>
                 </div>
